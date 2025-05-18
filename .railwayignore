@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# But don't ignore these files
+!app.py
+!requirements.txt
+!railway.toml
+!Procfile
+!runtime.txt
+!glasses_model.h5 
