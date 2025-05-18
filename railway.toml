@@ -1,10 +1,18 @@
 [build]
 builder = "NIXPACKS"
+buildCommand = """
+echo "Verifying model file exists..."
+ls -la glasses_model.h5
+echo "Testing model loading..."
+python -c 'import tensorflow as tf; model=tf.keras.models.load_model("glasses_model.h5"); print("Model verified successfully")'
+"""
 
 [deploy]
 startCommand = "gunicorn app:app --bind 0.0.0.0:$PORT"
 healthcheckPath = "/health"
 restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
 
 [env]
-PYTHON_VERSION = "3.8.16" 
+PYTHON_VERSION = "3.8.16"
+TF_CPP_MIN_LOG_LEVEL = "0" 

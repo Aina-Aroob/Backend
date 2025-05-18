@@ -23,15 +23,26 @@ CORS(app, resources={
 
 # Load the model
 model = None
+MODEL_PATH = 'glasses_model.h5'
 
 def load_ml_model():
     global model
     try:
-        model = load_model('glasses_model.h5')
+        if not os.path.exists(MODEL_PATH):
+            logger.error(f"Model file not found at path: {MODEL_PATH}")
+            logger.error(f"Current working directory: {os.getcwd()}")
+            logger.error(f"Directory contents: {os.listdir('.')}")
+            return False
+            
+        model = load_model(MODEL_PATH)
         logger.info("Model loaded successfully")
+        return True
     except Exception as e:
         logger.error(f"Error loading model: {str(e)}")
+        logger.error(f"Current working directory: {os.getcwd()}")
+        logger.error(f"Directory contents: {os.listdir('.')}")
         logger.error(traceback.format_exc())
+        return False
 
 # Serve frontend static files
 @app.route('/')
@@ -52,7 +63,11 @@ def detect():
     
     if model is None:
         logger.info("Loading model for the first time")
-        load_ml_model()
+        if not load_ml_model():
+            return jsonify({
+                'error': 'Failed to load ML model. Please try again later.',
+                'details': 'Model initialization error'
+            }), 500
         
     if 'image' not in request.files:
         logger.warning("No image file in request")
