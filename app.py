@@ -34,8 +34,13 @@ def load_ml_model():
             logger.error(f"Directory contents: {os.listdir('.')}")
             return False
             
-        model = load_model(MODEL_PATH)
+        logger.info("Loading model...")
+        model = load_model(MODEL_PATH, compile=False)
         logger.info("Model loaded successfully")
+        
+        # Compile the model with default optimizer and loss
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        logger.info("Model compiled successfully")
         return True
     except Exception as e:
         logger.error(f"Error loading model: {str(e)}")
