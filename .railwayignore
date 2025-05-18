@@ -1,10 +1,21 @@
-# Ignore everything
-*
-
-# But don't ignore these files
+# Include only the necessary files
 !app.py
 !requirements.txt
 !railway.toml
 !Procfile
 !runtime.txt
-!glasses_model.h5 
+!glasses_model.h5
+!frontend/*
+!static/*
+!templates/*
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore environment files
+.env
+.venv/
+venv/ 
