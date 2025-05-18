@@ -41,5 +41,5 @@ ENV/
 Thumbs.db
 
 # Model files (if needed to be ignored)
-# *.h5
+!glasses_model.h5
 # *.keras 
